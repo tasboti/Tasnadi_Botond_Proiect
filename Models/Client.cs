@@ -13,10 +13,10 @@ namespace Tasnadi_Botond_Proiect.Models
             ErrorMessage = "Client name has to have the following format 'Firstname Lastname'"), Required,
             StringLength(50, MinimumLength = 3)]
         public string Name { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         
-        [RegularExpression(@"^[0-9]", ErrorMessage = "Has to be a valid phone number"), Required,
-            StringLength(10, MinimumLength = 10)]
+        [Phone]
         public string Phone { get; set; }
     }
 }

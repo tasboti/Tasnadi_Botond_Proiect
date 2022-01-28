@@ -21,6 +21,8 @@ namespace Tasnadi_Botond_Proiect.Pages.Clients
 
         public Client Client { get; set; }
 
+        public List<Transaction> Transactions { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -29,6 +31,11 @@ namespace Tasnadi_Botond_Proiect.Pages.Clients
             }
 
             Client = await _context.Client.FirstOrDefaultAsync(m => m.ID == id);
+            Transactions = _context.Transaction
+                .Include(t => t.Client)
+                .Include(t => t.Provider)
+                .Include(t => t.TransactionType)
+                .Where(t => t.ClientID == id).ToList();
 
             if (Client == null)
             {
