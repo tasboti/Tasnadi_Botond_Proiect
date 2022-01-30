@@ -31,11 +31,16 @@ namespace Tasnadi_Botond_Proiect.Pages.Clients
             }
 
             Client = await _context.Client.FirstOrDefaultAsync(m => m.ID == id);
+            try { 
             Transactions = _context.Transaction
                 .Include(t => t.Client)
                 .Include(t => t.Provider)
                 .Include(t => t.TransactionType)
                 .Where(t => t.ClientID == id).ToList();
+            } catch (ArgumentNullException ane)
+            {
+                Transactions = new List<Transaction>();
+            }
 
             if (Client == null)
             {

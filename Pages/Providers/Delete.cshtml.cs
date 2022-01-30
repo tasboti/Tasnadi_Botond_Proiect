@@ -49,8 +49,15 @@ namespace Tasnadi_Botond_Proiect.Pages.Providers
 
             if (Provider != null)
             {
-                _context.Provider.Remove(Provider);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Provider.Remove(Provider);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException dbe)
+                {
+                    return Content("Can't delete this provider as it's used \n" + dbe.InnerException.Message);
+                }
             }
 
             return RedirectToPage("./Index");

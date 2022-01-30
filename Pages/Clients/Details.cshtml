@@ -30,48 +30,56 @@
             @Html.DisplayFor(model => model.Client.Phone)
         </dd>
     </dl>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Transactions[0].Client)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Transactions[0].TransactionType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Transactions[0].Provider)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Transactions[0].Amount)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Transactions)
-            {
+    <div>
+        <a asp-page="./Edit" asp-route-id="@Model.Client.ID">Edit</a> |
+        <a asp-page="./Index">Back to List</a>
+    </div>
+    @if (Model.Transactions.Count > 0)
+    {
+        decimal total = 0.0M;
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Client.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TransactionType.Type)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Provider.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Transactions[0].TransactionType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Transactions[0].Provider)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Transactions[0].Amount)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Transactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Provider.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            <a asp-page="/Transactions/Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-page="/Transactions/Details" asp-route-id="@item.ID">Details</a> |
+                            <a asp-page="/Transactions/Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>
+                    </tr>
+                    total = decimal.Add(total, item.Amount);
+                }
+            </tbody>
+        </table>
+        <p>Value of all transactions: @total $</p>
+    }
+    else
+    {
+        <p>Client has no transactions</p>
+    }
 </div>
 
-
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Client.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
