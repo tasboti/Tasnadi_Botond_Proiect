@@ -49,8 +49,15 @@ namespace Tasnadi_Botond_Proiect.Pages.Clients
 
             if (Client != null)
             {
-                _context.Client.Remove(Client);
+                try
+                {
+                    _context.Client.Remove(Client);
                 await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException dbe)
+                {
+                    return Content("Can't delete this client as it's used \n" + dbe.InnerException.Message);
+                }
             }
 
             return RedirectToPage("./Index");
